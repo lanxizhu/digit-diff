@@ -265,7 +265,9 @@
   });
 
   onMount(() => {
-    void getCurrentWindow()
+    const currentWindow = getCurrentWindow();
+
+    void currentWindow
       .isAlwaysOnTop()
       .then((alwaysOnTop) => {
         isPinned = alwaysOnTop;
