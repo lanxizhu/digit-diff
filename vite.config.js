@@ -6,6 +6,9 @@ const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
+  define: {
+    __APP_PLATFORM__: JSON.stringify(process.env.TAURI_ENV_PLATFORM),
+  },
   plugins: [sveltekit(), tailwindcss()],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`

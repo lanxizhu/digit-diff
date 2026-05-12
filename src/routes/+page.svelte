@@ -288,6 +288,10 @@
       .catch((error) => {
         console.error("Failed to read always-on-top state:", error);
       });
+
+    if (__APP_PLATFORM__ === "windows") {
+      document.getElementById("drag-region")?.remove();
+    }
   });
 </script>
 
