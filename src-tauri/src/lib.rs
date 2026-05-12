@@ -47,7 +47,7 @@ pub fn run() {
             }
 
             #[cfg(target_os = "windows")]
-            apply_mica(&window, Some((18, 18, 18, 125)))
+            apply_mica(&window, None)
                 .expect("Unsupported platform! 'apply_mica' is only supported on Windows");
 
             Ok(())

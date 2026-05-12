@@ -201,10 +201,10 @@
       if (!focusHandled) {
         focusHandled = true;
         setTimeout(() => {
-      if (challenger && !defender) {
-        rightTextArea?.focus();
-      } else  {
-        leftTextArea?.focus();
+          if (challenger && !defender) {
+            rightTextArea?.focus();
+          } else  {
+            leftTextArea?.focus();
           }
         }, 50);
       }
