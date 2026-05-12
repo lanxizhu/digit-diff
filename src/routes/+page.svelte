@@ -72,7 +72,7 @@
     clearImagePreview("left", false);
     clearImagePreview("right", false);
 
-          setWindowSize("small");
+    setWindowSize("small");
   }
 
   async function togglePinned() {
@@ -166,23 +166,27 @@
     syncWindowSizeToImagePreviews();
   }
 
-  function setWindowSize(size: "small" | "medium" | "large") {
-    const width:number = 720;
+  async function setWindowSize(size: "small" | "medium" | "large") {
+    const appwindow = getCurrentWindow();
+    const info = await appwindow.innerSize()
+
+    const { width } = info;
+
+    const HEIGHT_BASE = __APP_PLATFORM__ === "windows" ? 515 * 1 : 547 * 2;
+
+    const imageHeight = (120 + 8) * (__APP_PLATFORM__ === "windows" ? 1 : 2);
+
     let height: number;
-
-    const HEIGHT_BASE = 1094;
-
-    const imageHeight = 240;
-
+    
     switch (size) {
       case "small":
         height = HEIGHT_BASE;
         break;
       case "medium":
-        height = HEIGHT_BASE + imageHeight + 16;
+        height = HEIGHT_BASE + imageHeight;
         break;
       case "large":
-        height = HEIGHT_BASE + (imageHeight + 16) * 2;
+        height = HEIGHT_BASE + imageHeight * 2;
         break;
     }
 
@@ -291,6 +295,7 @@
 
     if (__APP_PLATFORM__ === "windows") {
       document.getElementById("drag-region")?.remove();
+      document.querySelector(".app-shell")?.classList.add("windows-fix");
     }
   });
 </script>

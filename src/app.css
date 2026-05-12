@@ -109,6 +109,10 @@ textarea {
   padding: 24px;
 }
 
+.windows-fix {
+  min-height: 100vh;
+}
+
 .compare-panel {
   width: min(820px, 100%);
   padding: 24px;
