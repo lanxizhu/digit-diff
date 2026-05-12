@@ -193,12 +193,20 @@
     invoke("animate_window_size", { width, height });
   }
 
+  let focusHandled = $state(false);
+
   function focusPrimaryTextArea() {
     requestAnimationFrame(() => {
+      const active = document.activeElement as HTMLElement;
+      if (!focusHandled) {
+        focusHandled = true;
+        setTimeout(() => {
       if (challenger && !defender) {
         rightTextArea?.focus();
       } else  {
         leftTextArea?.focus();
+          }
+        }, 50);
       }
     });
   }
@@ -267,12 +275,15 @@
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
     }
+    focusHandled = false;
   };
 
   function handleTextareaFoucs(event: Event) {
     // 解决 macOS 上的聚焦问题
+    event.stopPropagation();
     const target = event.currentTarget as HTMLTextAreaElement;
     setTimeout(() => target.select(), 10);
+    focusHandled = true;
   }
 
   onDestroy(() => {

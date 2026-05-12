@@ -95,6 +95,7 @@ body {
   margin: 0;
   color: var(--text);
   background: transparent;
+  overflow: hidden;
 }
 
 button,
