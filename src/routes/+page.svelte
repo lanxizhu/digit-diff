@@ -73,8 +73,6 @@
     clearImagePreview("right", false);
 
           setWindowSize("small");
-
-      
   }
 
   async function togglePinned() {
@@ -193,10 +191,10 @@
 
   function focusPrimaryTextArea() {
     requestAnimationFrame(() => {
-      if (!leftTextArea.value || (leftTextArea.value && rightTextArea.value)) {
-        leftTextArea?.focus();
-      } else if (!defender) {
+      if (challenger && !defender) {
         rightTextArea?.focus();
+      } else  {
+        leftTextArea?.focus();
       }
     });
   }
@@ -258,6 +256,21 @@
     void recognizeImage(side, imageFile);
   }
 
+  // 1. 处理窗口失去焦点
+  const handleWindowBlur = () => {
+    // 【关键修复】窗口失焦时，主动取消当前元素的聚焦状态
+    // 这样 Tauri 再次获焦时，就不会自动强行恢复之前的焦点，从而彻底消除闪烁
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
+  function handleTextareaFoucs(event: Event) {
+    // 解决 macOS 上的聚焦问题
+    const target = event.currentTarget as HTMLTextAreaElement;
+    setTimeout(() => target.select(), 10);
+  }
+
   onDestroy(() => {
     clearImagePreview("left");
     clearImagePreview("right");
@@ -280,6 +293,7 @@
 
 <svelte:window
   onfocus={focusPrimaryTextArea}
+  onblur={handleWindowBlur}
   onkeydown={(event) => {
     if (event.key === "Escape") {
       activePreview = "";
@@ -331,11 +345,7 @@
           placeholder="粘贴数字或图片"
           spellcheck="false"
           onpaste={(event) => handlePaste("left", event)}
-          onfocus={(event) => {
-            // 解决 macOS 上的聚焦问题
-            const target = event.currentTarget as HTMLTextAreaElement;
-            setTimeout(() => target.select(), 0);
-          }}
+          onfocus={handleTextareaFoucs}
         ></textarea>
         <input
           bind:this={leftFileInput}
@@ -380,11 +390,7 @@
           placeholder="粘贴数字或图片"
           spellcheck="false"
           onpaste={(event) => handlePaste("right", event)}
-          onfocus={(event) => {
-            // 解决 macOS 上的聚焦问题
-            const target = event.currentTarget as HTMLTextAreaElement;
-            setTimeout(() => target.select(), 0);
-          }}
+          onfocus={handleTextareaFoucs}
         ></textarea>
         <input
           bind:this={rightFileInput}
