@@ -172,7 +172,7 @@
 
     const { width } = info;
 
-    const HEIGHT_BASE = __APP_PLATFORM__ === "windows" ? 515 * 1 : 547 * 2;
+    const HEIGHT_BASE = __APP_PLATFORM__ === "windows" ? 600 * 1 : 632 * 2;
 
     const imageHeight = (120 + 8) * (__APP_PLATFORM__ === "windows" ? 1 : 2);
 
